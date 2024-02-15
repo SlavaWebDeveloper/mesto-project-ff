@@ -20,8 +20,7 @@ function createCard(card, cardDelete) {
   return cardElement;
 }
 
-renderCard.forEach(function(card) {
+initialCards.forEach(function(card) {
   placesList.append(createCard(card));
 })
 
-createCard(initialCards);
