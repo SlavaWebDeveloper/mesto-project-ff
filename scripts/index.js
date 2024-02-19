@@ -1,10 +1,27 @@
-// @todo: Темплейт карточки
+/**
+ * @fileoverview Файл содержит скрипт для работы с карточками на веб-странице
+ * @version 1.0.0
+ */
+
+/**
+ * Шаблон для создания карточки
+ * @type {HTMLTemplateElement}
+ */
 const cardTemplate = document.querySelector('#card-template').content;
 
-// @todo: DOM узлы
+/**
+ * Узел списка карточек
+ * @type {HTMLElement}
+ */
 const placesList = document.querySelector('.places__list');
 
-// @todo: Функция создания карточки
+/**
+ * Функция для создания HTML-элемента карточки на основе переданных данных
+ * @param {Object} card - Данные карточки
+ * @param {string} card.name - Название карточки
+ * @param {string} card.link - Ссылка на изображение карточки
+ * @returns {HTMLElement} - HTML-элемент карточки
+ */
 function createCard(card) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);  // шаблон для отдельной карточки
   
@@ -19,11 +36,17 @@ function createCard(card) {
   return cardElement;
 }
 
+/**
+ * Функция для удаления карточки
+ * @param {HTMLElement} cardElement - HTML-элемент карточки
+ */
 function cardDelete(cardElement) {
   cardElement.closest('.card').remove();
 }
 
-// @todo: Вывести карточки на страницу
+/**
+ * Выводит карточки из массива на веб-страницу
+ */
 initialCards.forEach(function(card) {
   placesList.append(createCard(card));
 })
