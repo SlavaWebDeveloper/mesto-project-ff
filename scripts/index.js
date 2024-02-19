@@ -1,6 +1,6 @@
 /**
  * @fileoverview Файл содержит скрипт для работы с карточками на веб-странице
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
@@ -20,13 +20,15 @@ const placesList = document.querySelector('.places__list');
  * @param {Object} card - Данные карточки
  * @param {string} card.name - Название карточки
  * @param {string} card.link - Ссылка на изображение карточки
+ * @param {Function} cardDelete - Функция для удаления карточки
  * @returns {HTMLElement} - HTML-элемент карточки
  */
-function createCard(card) {
+function createCard(card, cardDelete) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);  // шаблон для отдельной карточки
   
   // обновление данных
   cardElement.querySelector('.card__image').src = card.link;
+  cardElement.querySelector('.card__image').alt = card.name;
   cardElement.querySelector('.card__title').textContent = card.name;
   
   cardElement.querySelector('.card__delete-button').addEventListener('click', function() {
@@ -48,5 +50,5 @@ function cardDelete(cardElement) {
  * Выводит карточки из массива на веб-страницу
  */
 initialCards.forEach(function(card) {
-  placesList.append(createCard(card));
+  placesList.append(createCard(card, cardDelete));
 })
