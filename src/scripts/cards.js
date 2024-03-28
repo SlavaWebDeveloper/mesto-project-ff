@@ -24,3 +24,5 @@ const initialCards = [
       link: "https://cdn.pixabay.com/photo/2023/10/02/11/51/gingerbread-8289064_1280.jpg",
     }
 ];
+
+export default initialCards;

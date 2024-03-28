@@ -1,3 +1,6 @@
+import './../styles/index.css'; 
+import initialCards from './cards.js';
+
 /**
  * @fileoverview Файл содержит скрипт для работы с карточками на веб-странице
  * @version 1.0.1
