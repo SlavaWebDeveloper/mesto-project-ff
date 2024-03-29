@@ -2,7 +2,7 @@ import './../styles/index.css';
 import { createCard, cardDelete } from "./components/card";
 import { openModal, closeModal } from "./components/modal"
 import initialCards from './cards.js';
-import { handleFormSubmit, updateProfileFields } from './components/profile';
+import { handleFormSubmit, updateProfileFields } from './components/profile.js';
 
 const cardTemplate = document.querySelector('#card-template').content;
 const placesList = document.querySelector('.places__list');
