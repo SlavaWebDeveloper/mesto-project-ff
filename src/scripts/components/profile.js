@@ -15,6 +15,5 @@ export function handleFormSubmit(evt, popupTypeEdit) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
-  closeModal(popupTypeEdit);
+  closeModal(popupTypeEdit); 
 }
-

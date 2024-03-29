@@ -6,6 +6,7 @@ const closeOnEscKeyPress = (e) => {
 }
 
 export function openModal(popup) { //обязательно нужно принимать html элемент 
+  popup.classList.add('popup_is-animated');
   popup.classList.add('popup_is-opened');
   document.addEventListener('keyup', closeOnEscKeyPress);
 }

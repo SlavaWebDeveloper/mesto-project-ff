@@ -1,5 +1,5 @@
 import './../styles/index.css';
-import { createCard, cardDelete } from "./components/card";
+import { createCard, cardDelete, addNewCard } from "./components/card";
 import { openModal, closeModal } from "./components/modal"
 import initialCards from './cards.js';
 import { handleFormSubmit, updateProfileFields } from './components/profile.js';
@@ -10,25 +10,27 @@ const placesList = document.querySelector('.places__list');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const popupTypeImage = document.querySelector('.popup_type_image');
-const popupCloseAll = document.querySelectorAll('.popup');
-const content = document.querySelector('.page__content')
+
 const formElement = popupTypeEdit.querySelector('[name="edit-profile"]');
+const formNewPlace = popupTypeNewCard.querySelector('[name="new-place"]');
+
+const content = document.querySelector('.page__content');
+
 
 content.addEventListener('click', function (event) {
-  if (event.target.classList.contains('profile__edit-button')) {
+  const target = event.target;
+  if (target.classList.contains('profile__edit-button')) {
     openModal(popupTypeEdit);
     updateProfileFields();
   }
-  event.target.classList.contains('profile__add-button') ? openModal(popupTypeNewCard) : '';
-  event.target.classList.contains('card__image') ? openModal(popupTypeImage) : '';
-});
-
-popupCloseAll.forEach(popup => {
-  popup.addEventListener('click', function (event) {
-    if (event.target.closest('.popup__close') || event.target === popup) {
-      closeModal(popup);
-    }
-  });
+  if (target.classList.contains('profile__add-button')) {
+    openModal(popupTypeNewCard);
+  }
+  target.classList.contains('card__image') ? openModal(popupTypeImage) : '';
+  if (target.closest('.popup__close') || target.classList.contains('popup_is-opened')) {
+    const popupOpen = content.querySelector('.popup_is-opened');
+    closeModal(popupOpen);
+  }
 });
 
 /**
@@ -39,3 +41,10 @@ initialCards.forEach(function (card) {
 })
 
 formElement.addEventListener('submit', (evt) => handleFormSubmit(evt, popupTypeEdit));
+
+formNewPlace.addEventListener('submit', (evt) => {
+  addNewCard(evt, placesList, cardTemplate);
+  formNewPlace.reset();
+  closeModal(popupTypeNewCard);
+}
+);

@@ -30,3 +30,14 @@ export function createCard(cardTemplate, card, cardDelete) {
 export function cardDelete(cardElement) {
   cardElement.closest('.card').remove();
 }
+
+
+export function addNewCard(evt, placesList, cardTemplate) {
+  evt.preventDefault();
+  let newCard = [];
+  
+  newCard.name = document.querySelector('.popup__input_type_card-name').value;
+  newCard.link = document.querySelector('.popup__input_type_url').value;
+  
+  placesList.prepend(createCard(cardTemplate, newCard, cardDelete));
+}
