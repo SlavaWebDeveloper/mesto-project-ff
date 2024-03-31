@@ -1,5 +1,5 @@
 import './../styles/index.css';
-import { createCard, cardDelete, addNewCard, toogleCardLike, openModalWithImage } from "./components/card";
+import { createCard, cardDelete, addNewCard, toggleCardLike, openImagePopup} from "./components/card";
 import { openModal, closeModal } from "./components/modal"
 import initialCards from './cards.js';
 import { handleFormSubmit, updateProfileFields } from './components/profile.js';
@@ -44,13 +44,13 @@ content.addEventListener('click', function (event) {
  * Выводит карточки из массива на веб-страницу
  */
 initialCards.forEach(function (card) {
-  placesList.append(createCard(cardTemplate, card, cardDelete, toogleCardLike, openModalWithImage));
+  placesList.append(createCard(cardTemplate, card, cardDelete, toggleCardLike, openImagePopup));
 })
 
 formElement.addEventListener('submit', (evt) => handleFormSubmit(evt, popupTypeEdit));
 
 formNewPlace.addEventListener('submit', (evt) => {
-  addNewCard(evt, placesList, cardTemplate, toogleCardLike, openModalWithImage);
+  addNewCard(evt, placesList, cardTemplate, toggleCardLike, openImagePopup);
   formNewPlace.reset();
   closeModal(popupTypeNewCard);
 });

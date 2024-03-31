@@ -26,7 +26,7 @@ export function createCard(cardTemplate, card, cardDelete, toggleCardLike, openI
   cardImage.addEventListener('click', () => openImagePopup(cardImage.src, cardImage.alt));
 
   // Установка обработчика события на кнопку удаления карточки
-  cardElement.querySelector('.card__delete-button').addEventListener('click', () => removeCard(cardElement));
+  cardElement.querySelector('.card__delete-button').addEventListener('click', () => cardDelete(cardElement));
   
   return cardElement;
 }
