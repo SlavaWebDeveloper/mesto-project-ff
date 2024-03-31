@@ -1,5 +1,5 @@
 import './../styles/index.css';
-import { createCard, cardDelete, addNewCard } from "./components/card";
+import { createCard, cardDelete, addNewCard, toogleCardLike, openModalWithImage } from "./components/card";
 import { openModal, closeModal } from "./components/modal"
 import initialCards from './cards.js';
 import { handleFormSubmit, updateProfileFields } from './components/profile.js';
@@ -23,28 +23,34 @@ content.addEventListener('click', function (event) {
     openModal(popupTypeEdit);
     updateProfileFields();
   }
+  
   if (target.classList.contains('profile__add-button')) {
     openModal(popupTypeNewCard);
+  };
+  
+  if (target.classList.contains('card__image')) {
+    openModal(popupTypeImage);
   }
-  target.classList.contains('card__image') ? openModal(popupTypeImage) : '';
+
+
   if (target.closest('.popup__close') || target.classList.contains('popup_is-opened')) {
     const popupOpen = content.querySelector('.popup_is-opened');
     closeModal(popupOpen);
   }
 });
 
+
 /**
  * Выводит карточки из массива на веб-страницу
  */
 initialCards.forEach(function (card) {
-  placesList.append(createCard(cardTemplate, card, cardDelete));
+  placesList.append(createCard(cardTemplate, card, cardDelete, toogleCardLike, openModalWithImage));
 })
 
 formElement.addEventListener('submit', (evt) => handleFormSubmit(evt, popupTypeEdit));
 
 formNewPlace.addEventListener('submit', (evt) => {
-  addNewCard(evt, placesList, cardTemplate);
+  addNewCard(evt, placesList, cardTemplate, toogleCardLike, openModalWithImage);
   formNewPlace.reset();
   closeModal(popupTypeNewCard);
-}
-);
+});
