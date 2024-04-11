@@ -4,7 +4,7 @@
  */
 export function openModal(popup) { //обязательно нужно принимать html элемент 
   popup.classList.add('popup_is-opened');
-  document.addEventListener('keyup', closeOnEscKeyPress);
+  document.addEventListener('keydown', closeOnEscKeyPress);
 }
 
 /**
@@ -13,7 +13,7 @@ export function openModal(popup) { //обязательно нужно прин�
  */
 export function closeModal(popup) { //обязательно нужно принимать html элемент 
   popup.classList.remove('popup_is-opened');
-  document.removeEventListener('keyup', closeOnEscKeyPress);
+  document.removeEventListener('keydown', closeOnEscKeyPress);
 }
 
 /**
@@ -21,8 +21,8 @@ export function closeModal(popup) { //обязательно нужно прин
  * @param {KeyboardEvent} e - Событие клавиатуры
  */
 const closeOnEscKeyPress = (e) => {
-  const ESC = 27;  // Код символа клавиши Esc
-  if (e.keyCode === ESC) {
+  const ESC = 'Escape';
+  if (e.key === ESC) {
     const popup = document.querySelector('.popup_is-opened');
     closeModal(popup);
   }

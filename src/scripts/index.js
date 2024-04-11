@@ -4,7 +4,7 @@ import { createCard, deleteCard, toggleCardLike } from "./components/card";
 import { openModal, closeModal } from "./components/modal";
 import { clearValidation, enableValidation } from './components/validate.js';
 import { createPost, getAllCardsPromis, getInfoUserPromise, updateAvatarUserPromis, updateInfoUserPromis } from './components/api.js';
-import * as data from '../utils/constants.js';
+import * as constants from '../utils/constants.js';
 
 let userId = null;
 let isSaving = false;
@@ -13,8 +13,8 @@ let isSaving = false;
  * Функция для обновления полей формы редактирования профиля значениями из соответствующих элементов профиля
 **/
 function updateProfileFields() {
-  data.nameInput.value = data.profileName.textContent;
-  data.jobInput.value = data.profileJob.textContent;
+  constants.nameInput.value = constants.profileName.textContent;
+  constants.jobInput.value = constants.profileJob.textContent;
 }
 
 /**
@@ -25,9 +25,6 @@ function updateProfileFields() {
 function submitEditProfileForm(evt, popup) {
   evt.preventDefault();
 
-  data.profileName.textContent = data.nameInput.value;
-  data.profileJob.textContent = data.jobInput.value;
-
   if (!isSaving) {
     const button = popup.querySelector('.popup__button');
     isSaving = true;
@@ -35,10 +32,12 @@ function submitEditProfileForm(evt, popup) {
     button.textContent = 'Сохранение...';
 
     updateInfoUserPromis({
-      name: data.profileName.textContent,
-      about: data.profileJob.textContent
+      name: constants.nameInput.value,
+      about: constants.jobInput.value
     })
       .then(() => {
+        constants.profileName.textContent = constants.nameInput.value;
+        constants.profileJob.textContent = constants.jobInput.value;
         isSaving = false;
         button.textContent = 'Сохранить';
         closeModal(popup);
@@ -66,14 +65,14 @@ function addNewCard(evt, placesList, cardTemplate, toggleCardLike, openImagePopu
   evt.preventDefault();
 
   if (!isSaving) {
-    const button = data.formNewPlace.querySelector('.popup__button');
+    const button = constants.formNewPlace.querySelector('.popup__button');
     isSaving = true;
 
     button.textContent = 'Сохранение...';
 
     const newCard = {
-      name: data.popupInputTypeCardName.value,
-      link: data.popupInputTypeUrl.value
+      name: constants.popupInputTypeCardName.value,
+      link: constants.popupInputTypeUrl.value
     };
 
     createPost({
@@ -83,9 +82,9 @@ function addNewCard(evt, placesList, cardTemplate, toggleCardLike, openImagePopu
       isSaving = false;
       button.textContent = 'Сохранить';
       placesList.prepend(createCard(cardTemplate, postData, userId, deleteCard, toggleCardLike, openImagePopup));
-      data.formNewPlace.reset();
-      clearValidation(data.formNewPlace, data.validationConfig);
-      closeModal(data.popupTypeNewCard);
+      constants.formNewPlace.reset();
+      clearValidation(constants.formNewPlace, constants.validationConfig);
+      closeModal(constants.popupTypeNewCard);
     })
       .catch((error) => {
         isSaving = false;
@@ -104,34 +103,34 @@ function addNewCard(evt, placesList, cardTemplate, toggleCardLike, openImagePopu
  * @param {string} imageAlt - Альтернативный текст изображения
 **/
 function openImagePopup(imageSrc, imageAlt) {
-  popupImage.src = imageSrc;
-  popupImage.alt = imageAlt;
-  data.popupCaption.textContent = imageAlt;
-  openModal(data.popupTypeImage);
+  constants.popupImage.src = imageSrc;
+  constants.popupImage.alt = imageAlt;
+  constants.popupCaption.textContent = imageAlt;
+  openModal(constants.popupTypeImage);
 }
 
 // Добавление слушателей событий
-data.profileEditButton.addEventListener('click', () => {
-  openModal(data.popupTypeEdit);
+constants.profileEditButton.addEventListener('click', () => {
+  openModal(constants.popupTypeEdit);
   updateProfileFields();
 });
 
-data.profileAddButton.addEventListener('click', () => {
-  openModal(data.popupTypeNewCard);
-  clearValidation(data.popupTypeEdit, data.validationConfig);
+constants.profileAddButton.addEventListener('click', () => {
+  openModal(constants.popupTypeNewCard);
+  clearValidation(constants.popupTypeEdit, constants.validationConfig);
 });
 
-data.formEditProfile.addEventListener('submit', (evt) => {
-  clearValidation(data.formEditProfile, data.validationConfig);
-  submitEditProfileForm(evt, data.popupTypeEdit);
+constants.formEditProfile.addEventListener('submit', (evt) => {
+  clearValidation(constants.formEditProfile, constants.validationConfig);
+  submitEditProfileForm(evt, constants.popupTypeEdit);
 });
 
-data.formNewPlace.addEventListener('submit', (evt) => {
-  addNewCard(evt, data.placesList, data.cardTemplate, toggleCardLike, openImagePopup);
+constants.formNewPlace.addEventListener('submit', (evt) => {
+  addNewCard(evt, constants.placesList, constants.cardTemplate, toggleCardLike, openImagePopup);
 });
 
 // Обработчик слушателя с функцией закрытия на все кнопки закрытия
-data.popupCloseButtons.forEach(function (button) {
+constants.popupCloseButtons.forEach(function (button) {
   button.addEventListener('click', function () {
     const popup = button.closest('.popup');
     closeModal(popup);
@@ -139,7 +138,7 @@ data.popupCloseButtons.forEach(function (button) {
 })
 
 // Обработчик слушателя закрытия по оверлею на все модальные окна
-data.popups.forEach(function (popup) {
+constants.popups.forEach(function (popup) {
   popup.addEventListener('click', function (evt) {
     if (evt.target.classList.contains('popup')) {
       closeModal(popup);
@@ -148,32 +147,32 @@ data.popups.forEach(function (popup) {
 });
 
 // Обработчик клика по окну редактирования аватара для открытия модального окна с изображением
-data.popupAvatarEdit.addEventListener('click', () => {
-  openModal(data.popupAvatarImageEdit);
+constants.popupAvatarEdit.addEventListener('click', () => {
+  openModal(constants.popupAvatarImageEdit);
 });
 
 // Обработчик события отправки формы редактирования аватара профиля
-data.formEditAvatar.addEventListener('submit', (evt) => submitEditAvatarProfileForm(evt, data.popupAvatarEdit));
+constants.formEditAvatar.addEventListener('submit', (evt) => submitEditAvatarProfileForm(evt, constants.popupAvatarEdit));
 
 // Функция отправки формы редактирования аватара профиля
 function submitEditAvatarProfileForm(evt) {
   evt.preventDefault();
 
   if (!isSaving) {
-    const button = data.formEditAvatar.querySelector('.popup__button');
+    const button = constants.formEditAvatar.querySelector('.popup__button');
     isSaving = true;
     button.textContent = 'Сохранение...';
 
     // Обновление аватара пользователя через промис
     updateAvatarUserPromis({
-      avatar: data.popupAvatarImageEdit.querySelector('.popup__input_type_url').value,
+      avatar: constants.popupAvatarImageEdit.querySelector('.popup__input_type_url').value,
     })
       .then((res) => {
         isSaving = false;
         button.textContent = 'Сохранить';
-        data.profileImage.style.backgroundImage = `url("${res.avatar}")`;
-        data.formEditAvatar.reset();
-        closeModal(data.popupAvatarImageEdit);
+        constants.profileImage.style.backgroundImage = `url("${res.avatar}")`;
+        constants.formEditAvatar.reset();
+        closeModal(constants.popupAvatarImageEdit);
       })
       .catch((err) => {
         isSaving = false;
@@ -189,14 +188,14 @@ function submitEditAvatarProfileForm(evt) {
 // Выполнение нескольких промисов: получение информации о пользователе и всех карточек
 Promise.all([getInfoUserPromise(), getAllCardsPromis()])
   .then(([userData, cardsData]) => {
-    data.profileName.textContent = userData.name;
-    data.profileJob.textContent = userData.about;
-    data.profileImage.style.backgroundImage = `url("${userData.avatar}")`;
+    constants.profileName.textContent = userData.name;
+    constants.profileJob.textContent = userData.about;
+    constants.profileImage.style.backgroundImage = `url("${userData.avatar}")`;
     userId = userData._id;
     
     // Добавление карточек на страницу
     cardsData.forEach((card) => {
-      data.placesList.append(createCard(data.cardTemplate, card, userId, deleteCard, toggleCardLike, openImagePopup));
+      constants.placesList.append(createCard(constants.cardTemplate, card, userId, deleteCard, toggleCardLike, openImagePopup));
     })
   })
   .catch((err) => {
@@ -204,4 +203,4 @@ Promise.all([getInfoUserPromise(), getAllCardsPromis()])
   });
   
 // Включение валидации формы
-enableValidation(data.validationConfig);
+enableValidation(constants.validationConfig);
