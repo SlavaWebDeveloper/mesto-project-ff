@@ -1,3 +1,6 @@
+import { createLikeCard, deleteLikeCard, deletePost } from "../scripts/components/api";
+import { deleteCard, toggleCardLike } from "../scripts/components/card";
+
 export const cardTemplate = document.querySelector('#card-template').content;
 export const placesList = document.querySelector('.places__list');
 
@@ -36,3 +39,20 @@ export const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 };
+
+
+export function likeCallback(evt, cardData, likeButton) {
+  const likeMethod = likeButton.classList.contains('card__like-button_is-active') ? deleteLikeCard : createLikeCard;
+  likeMethod(cardData._id)
+    .then((card) => {
+      toggleCardLike(evt);
+      likeButton.dataset.likes = card.likes.length;
+    })
+    .catch(error => console.log(error));
+}
+
+export function deleteCallback(cardElement, cardId) {
+  deletePost(cardId)
+    .then(() => deleteCard(cardElement))
+    .catch(error => console.log(error))
+}

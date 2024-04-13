@@ -35,9 +35,9 @@ function submitEditProfileForm(evt, popup) {
       name: constants.nameInput.value,
       about: constants.jobInput.value
     })
-      .then(() => {
-        constants.profileName.textContent = constants.nameInput.value;
-        constants.profileJob.textContent = constants.jobInput.value;
+      .then((res) => {
+        constants.profileName.textContent = res.name;
+        constants.profileJob.textContent = res.about;
         isSaving = false;
         button.textContent = 'Сохранить';
         closeModal(popup);
@@ -61,7 +61,7 @@ function submitEditProfileForm(evt, popup) {
  * @param {Function} toggleCardLike - Функция для переключения состояния "Нравится" карточки
  * @param {Function} openImagePopup - Функция для открытия попапа с изображением карточки
 **/
-function addNewCard(evt, placesList, cardTemplate, toggleCardLike, openImagePopup) {
+function addNewCard(evt, placesList, cardTemplate, openImagePopup) {
   evt.preventDefault();
 
   if (!isSaving) {
@@ -81,7 +81,7 @@ function addNewCard(evt, placesList, cardTemplate, toggleCardLike, openImagePopu
     }).then((postData) => {
       isSaving = false;
       button.textContent = 'Сохранить';
-      placesList.prepend(createCard(cardTemplate, postData, userId, deleteCard, toggleCardLike, openImagePopup));
+      placesList.prepend(createCard(cardTemplate, postData, userId, constants.deleteCallback, constants.likeCallback, openImagePopup));
       constants.formNewPlace.reset();
       clearValidation(constants.formNewPlace, constants.validationConfig);
       closeModal(constants.popupTypeNewCard);
@@ -195,7 +195,7 @@ Promise.all([getInfoUserPromise(), getAllCardsPromis()])
     
     // Добавление карточек на страницу
     cardsData.forEach((card) => {
-      constants.placesList.append(createCard(constants.cardTemplate, card, userId, deleteCard, toggleCardLike, openImagePopup));
+      constants.placesList.append(createCard(constants.cardTemplate, card, userId, constants.deleteCallback, constants.likeCallback, openImagePopup));
     })
   })
   .catch((err) => {

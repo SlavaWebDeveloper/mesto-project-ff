@@ -6,12 +6,12 @@ import { createLikeCard, deleteLikeCard, deletePost } from "./api";
  * @param {Object} cardData - Данные карточки
  * @param {string} card.name - Название карточки
  * @param {string} card.link - Ссылка на изображение карточки
- * @param {Function} deleteCard - Функция для удаления карточки
+ * @param {Function} deletePost - Функция для удаления карточки
  * @param {Function} toggleCardLike - Функция для переключения состояния "Нравится" карточки
  * @param {Function} openImagePopup - Функция для открытия попапа с изображением карточки
  * @returns {HTMLElement} - HTML-элемент карточки
  */
-export function createCard(cardTemplate, cardData, userId, deleteCard, toggleCardLike, openImagePopup) {
+export function createCard(cardTemplate, cardData, userId, deletePost, toggleCardLike, openImagePopup) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
   const cardImage = cardElement.querySelector('.card__image');
@@ -32,14 +32,7 @@ export function createCard(cardTemplate, cardData, userId, deleteCard, toggleCar
   }
 
   likeButton.addEventListener('click', (evt) => {
-    const likeMethod = likeButton.classList.contains('card__like-button_is-active') ? deleteLikeCard : createLikeCard;
-
-    likeMethod(cardData._id)
-      .then((cardData) => {
-        toggleCardLike(evt);
-        likeButton.dataset.likes = cardData.likes.length;
-      })
-      .catch(error => console.log(error));
+    toggleCardLike(evt, cardData, likeButton)
   });
 
   // Находим изображение в карточке и добавляем обработчик события клика для открытия изображения в попапе
@@ -47,13 +40,8 @@ export function createCard(cardTemplate, cardData, userId, deleteCard, toggleCar
 
   // Установка обработчика события на кнопку удаления карточки
   if (cardData.owner._id === userId) {
-    const deleteCallback = (cardElement, cardId) => {
-      deletePost(cardId)
-        .then(() => deleteCard(cardElement))
-        .catch(error => console.log(error))
-    }
     cardElement.querySelector('.card__delete-button').addEventListener('click', () => {
-      deleteCallback(cardElement, cardData._id)
+      deletePost(cardElement, cardData._id);
     });
   } else {
     cardElement.querySelector('.card__delete-button').remove();
